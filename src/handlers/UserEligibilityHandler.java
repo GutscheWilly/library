@@ -1,5 +1,6 @@
 package handlers;
 
+import exceptions.UserNotEligibilityException;
 import managers.LoanManager;
 
 public class UserEligibilityHandler extends LoanBookHandler {
@@ -8,6 +9,6 @@ public class UserEligibilityHandler extends LoanBookHandler {
       return super.nextHandler.handleLoan(loanManager);
     }
 
-    throw new RuntimeException("User is not eligibility");
+    throw new UserNotEligibilityException();
   }
 }

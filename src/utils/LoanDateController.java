@@ -1,6 +1,8 @@
 package utils;
 
 import config.ConfigurationManager;
+import exceptions.LoanAlreadyReturnedException;
+import exceptions.LoanLateException;
 
 import java.time.LocalDate;
 
@@ -10,8 +12,8 @@ public class LoanDateController {
   private LocalDate loanReturnedDate;
 
   public LoanDateController() {
-    loanStartDate = LocalDate.now();
-    loanEndDate = loanStartDate.plusDays(ConfigurationManager.getBaseLoanTimeInDays());
+    this.loanStartDate = LocalDate.now();
+    this.loanEndDate = loanStartDate.plusDays(ConfigurationManager.getBaseLoanTimeInDays());
   }
 
   public LocalDate getLoanStartDate() {
@@ -50,7 +52,7 @@ public class LoanDateController {
 
   public void giveBackLoan() {
     if (isLoanReturned()) {
-      throw new RuntimeException("Loan is already returned");
+      throw new LoanAlreadyReturnedException();
     }
 
     setLoanReturnedDate(LocalDate.now());
@@ -58,15 +60,14 @@ public class LoanDateController {
 
   public void renewLoanEndDate() {
     if (isLoanReturned()) {
-      throw new RuntimeException("Loan is already returned");
+      throw new LoanAlreadyReturnedException();
     }
 
     if (isLoanLate()) {
-      throw new RuntimeException("Loan is late. So, you can't renew it");
+      throw new LoanLateException();
     }
 
     LocalDate renewedLoanEndDate = loanEndDate.plusDays(ConfigurationManager.getBaseLoanTimeInDays());
-
     setLoanEndDate(renewedLoanEndDate);
   }
 }

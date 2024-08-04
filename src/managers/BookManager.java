@@ -1,8 +1,7 @@
 package managers;
 
 import entities.Book;
-import factories.LoanBookHandlerFactory;
-import handlers.LoanBookHandler;
+import mediators.LibraryMediator;
 import utils.AvailabilityController;
 
 public class BookManager {
@@ -11,17 +10,16 @@ public class BookManager {
 
   public BookManager(Book book) {
     this.book = book;
-    availabilityController = new AvailabilityController();
+    this.availabilityController = new AvailabilityController();
   }
 
   public BookManager(Book book, Boolean available) {
     this.book = book;
-    availabilityController = new AvailabilityController(available);
+    this.availabilityController = new AvailabilityController(available);
   }
 
-  public LoanManager loanBook(UserManager userManager) {
-    LoanBookHandler loanBookHandler = LoanBookHandlerFactory.getInstance();
-    return new LoanManager(userManager, this, loanBookHandler);
+  public LoanManager loanBook(LibraryMediator libraryMediator) {
+    return libraryMediator.loanBook(this);
   }
 
   public Boolean isBookAvailable() {

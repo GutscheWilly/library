@@ -11,8 +11,15 @@ public class LoanManager {
   public LoanManager(UserManager userManager, BookManager bookManager, LoanBookHandler loanBookHandler) {
     this.userManager = userManager;
     this.bookManager = bookManager;
-    loanDateController = new LoanDateController();
+    this.loanDateController = new LoanDateController();
+    verifyLoanValidation(loanBookHandler);
+  }
 
+  public BookManager getBookManager() {
+    return bookManager;
+  }
+
+  private void verifyLoanValidation(LoanBookHandler loanBookHandler) {
     loanBookHandler.handleLoan(this);
     applyVerifiedLoanSetup();
   }
@@ -39,6 +46,24 @@ public class LoanManager {
   }
 
   public void giveBackLoan() {
+    loanDateController.giveBackLoan();
+    userManager.removeActiveLoan(this);
+    bookManager.setBookAvailabilityToTrue();
+  }
 
+  public void renewLoan() {
+    loanDateController.renewLoanEndDate();
+  }
+
+  public boolean notMatchUser(UserManager userManager) {
+    return this.userManager != userManager;
+  }
+
+  public boolean notMatchBook(BookManager bookManager) {
+    return this.bookManager != bookManager;
+  }
+
+  public boolean notMatchUserBook(UserManager userManager, BookManager bookManager) {
+    return notMatchUser(userManager) || notMatchBook(bookManager);
   }
 }

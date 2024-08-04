@@ -4,7 +4,7 @@ public class AvailabilityController {
   private Boolean available;
 
   public AvailabilityController() {
-    available = true;
+    this.available = true;
   }
 
   public AvailabilityController(Boolean available) {

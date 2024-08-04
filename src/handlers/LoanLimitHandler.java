@@ -1,6 +1,7 @@
 package handlers;
 
 import config.ConfigurationManager;
+import exceptions.UserHasNoLoanLimitException;
 import managers.LoanManager;
 
 public class LoanLimitHandler extends LoanBookHandler {
@@ -9,6 +10,6 @@ public class LoanLimitHandler extends LoanBookHandler {
       return super.handleLoan(loanManager);
     }
 
-    throw new RuntimeException("User has no remaining loan limit");
+    throw new UserHasNoLoanLimitException();
   }
 }

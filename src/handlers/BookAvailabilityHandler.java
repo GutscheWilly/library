@@ -1,5 +1,6 @@
 package handlers;
 
+import exceptions.BookNotAvailableException;
 import managers.LoanManager;
 
 public class BookAvailabilityHandler extends LoanBookHandler {
@@ -8,6 +9,6 @@ public class BookAvailabilityHandler extends LoanBookHandler {
       return super.nextHandler.handleLoan(loanManager);
     }
 
-    throw new RuntimeException("Book is unavailable");
+    throw new BookNotAvailableException();
   }
 }
