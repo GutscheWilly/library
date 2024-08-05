@@ -1,58 +1,39 @@
 package managers;
 
 import entities.User;
-import exceptions.UserNotMatchLoanException;
-
-import java.util.ArrayList;
-import java.util.List;
+import utils.LoansController;
 
 public class UserManager {
   private User user;
-  private List<LoanManager> activeLoans = new ArrayList<>();
-  private List<LoanManager> loanHistory = new ArrayList<>();
+  private LoansController loansController;
 
   public UserManager(User user) {
     this.user = user;
+    this.loansController = new LoansController();
+  }
+
+  public UserManager(User user, LoansController loansController) {
+    this.user = user;
+    this.loansController = loansController;
   }
 
   public User getUser() {
     return user;
   }
 
-  public List<LoanManager> getActiveLoans() {
-    return activeLoans;
+  public void addLoan(LoanManager loanManager) {
+    loansController.addActiveLoan(loanManager);
   }
 
-  public List<LoanManager> getLoanHistory() {
-    return loanHistory;
-  }
-
-  public Integer getQuantityOfActiveLoans() {
-    return activeLoans.size();
+  public Integer getUserQuantityOfActiveLoans() {
+    return loansController.getQuantityOfActiveLoans();
   }
 
   public Boolean isUserEligibility() {
-    return activeLoans.stream().noneMatch(LoanManager::isLoanLate);
+    return loansController.areActiveLoansEligibility();
   }
 
-  public void addActiveLoan(LoanManager loanManager) {
-    if (loanManager.notMatchUser(this)) {
-      throw new UserNotMatchLoanException();
-    }
-
-    activeLoans.add(loanManager);
-    loanHistory.add(loanManager);
-  }
-
-  public void removeActiveLoan(LoanManager loanManager) {
-    if (loanManager.notMatchUser(this)) {
-      throw new UserNotMatchLoanException();
-    }
-
-    activeLoans.remove(loanManager);
-  }
-
-  public boolean isBookOnActiveLoans(BookManager bookManager) {
-    return activeLoans.stream().anyMatch(loanManager -> loanManager.getBookManager() == bookManager);
+  public void removeLoan(LoanManager loanManager) {
+    loansController.removeActiveLoan(loanManager);
   }
 }

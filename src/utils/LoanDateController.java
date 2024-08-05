@@ -40,11 +40,15 @@ public class LoanDateController {
     return loanReturnedDate != null;
   }
 
+  public Boolean isLoanNotReturned() {
+    return !isLoanReturned();
+  }
+
   public Boolean isLoanLate() {
     LocalDate currentDate = LocalDate.now();
 
     if (currentDate.isAfter(loanEndDate)) {
-      return !isLoanReturned();
+      return isLoanNotReturned();
     }
 
     return false;

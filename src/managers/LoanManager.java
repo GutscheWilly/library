@@ -15,10 +15,6 @@ public class LoanManager {
     verifyLoanValidation(loanBookHandler);
   }
 
-  public BookManager getBookManager() {
-    return bookManager;
-  }
-
   private void verifyLoanValidation(LoanBookHandler loanBookHandler) {
     loanBookHandler.handleLoan(this);
     applyVerifiedLoanSetup();
@@ -26,7 +22,7 @@ public class LoanManager {
 
   private void applyVerifiedLoanSetup() {
     bookManager.setBookAvailabilityToFalse();
-    userManager.addActiveLoan(this);
+    userManager.addLoan(this);
   }
 
   public Boolean isBookAvailable() {
@@ -34,7 +30,7 @@ public class LoanManager {
   }
 
   public Integer getUserQuantityOfActiveLoans() {
-    return userManager.getQuantityOfActiveLoans();
+    return userManager.getUserQuantityOfActiveLoans();
   }
 
   public Boolean isLoanLate() {
@@ -47,7 +43,7 @@ public class LoanManager {
 
   public void giveBackLoan() {
     loanDateController.giveBackLoan();
-    userManager.removeActiveLoan(this);
+    userManager.removeLoan(this);
     bookManager.setBookAvailabilityToTrue();
   }
 
@@ -55,15 +51,15 @@ public class LoanManager {
     loanDateController.renewLoanEndDate();
   }
 
-  public boolean notMatchUser(UserManager userManager) {
+  public Boolean notMatchUser(UserManager userManager) {
     return this.userManager != userManager;
   }
 
-  public boolean notMatchBook(BookManager bookManager) {
+  public Boolean notMatchBook(BookManager bookManager) {
     return this.bookManager != bookManager;
   }
 
-  public boolean notMatchUserBook(UserManager userManager, BookManager bookManager) {
+  public Boolean notMatchUserOrBook(UserManager userManager, BookManager bookManager) {
     return notMatchUser(userManager) || notMatchBook(bookManager);
   }
 }
